@@ -16,3 +16,14 @@ services:
       MP_SMTP_AUTH_ACCEPT_ANY: 1
       MP_SMTP_AUTH_ALLOW_INSECURE: 1
 ###< symfony/mailer ###
+
+  php:
+    build: ./docker/php
+    volumes:
+      - ./:/srv/app
+    working_dir: /srv/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - database
+    command:  symfony serve --no-tls --port=8000 --ansi --allow-http --listen-ip=0.0.0.0
