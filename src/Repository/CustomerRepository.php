@@ -5,6 +5,7 @@ use App\Entity\Customer;
 use App\Entity\Car;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query;
 
 class CustomerRepository extends ServiceEntityRepository
 {
@@ -20,32 +21,23 @@ class CustomerRepository extends ServiceEntityRepository
     public function findCustomerWithCarByHex(string $hexId): ?array
     {
         $qb = $this->createQueryBuilder('c')
-            ->select('c', 'car')
+            ->select("
+                CONCAT(c.first_name, ' ', c.last_name) AS full_name,
+                c.phone_number AS phone,
+                c.email AS email,
+                c.address_country AS country,
+                c.account_status AS account_status,
+                CONCAT(car.make, ' ', car.model) AS car_type,
+                car.year AS car_year,
+                car.vehicle_condition AS vehicle_condition,
+                car.price_eur AS price_eur,
+                car.last_service_date AS last_service_date
+            ")
             ->innerJoin(Car::class, 'car', 'WITH', 'car.hex_id = c.car_hex_id')
-            ->andWhere('c.car_hex_id = :hex')
+            ->andWhere('car.hex_id = :hex')
             ->setParameter('hex', $hexId)
             ->setMaxResults(1);
 
-        $res = $qb->getQuery()->getResult();
-        if (!$res) {
-            return null;
-        }
-
-        // Doctrine return array need to be unified
-        if (is_array($res)) {
-            $customer = $res[0] ?? $res['c'] ?? null;
-            $car = $res[1] ?? $res['car'] ?? null;
-        } else {
-            return null;
-        }
-
-        if (!$customer || !$car) {
-            return null;
-        }
-
-        return [
-            'customer' => $customer,
-            'car' => $car,
-        ];
+        return $qb->getQuery()->getOneOrNullResult(Query::HYDRATE_ARRAY);
     }
 }
