@@ -4,6 +4,8 @@
  */
 namespace Core\Instavocer\Helpers;
 
+use GuzzleHttp\Client;
+
 if (!defined('HACORE')) {
     exit;
 }
@@ -21,32 +23,47 @@ class ImageUploader
     private array $images = [];
     private int $recordId;
     private string $dir;
+    private Client $client;
 
-    public function __construct( array $images, int $recordId , string $dir)
+    public function __construct( array $images, int $recordId , string $dir, Client $client)
     {
         $this->images = $images;
+        $this->recordId = $recordId;
+        $this->dir = rtrim($dir, '/') . '/';
+        $this->client = $client;
     }
 
-    public function upload()
+    public function upload(): array
     {
-        // create folder if not existst
-        $uploadDir = $this->dir . "/" . $this->recordId;
-        if (!is_dir($uploadDir)) {
-            mkdir($uploadDir, 0777, true);
-        }
+        // Save images from photos array
+        $photosSaved = [];
+        if (isset($this->images) && is_array($this->images)) {
+            $uploadDir = $this->dir . $this->recordId . '/';
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0755, true);
+            }
+            foreach ($this->images as $photo) {
+                if (isset($photo['link'])) {
+                    $photoUrl = $photo['link'];
+                    $photoId = $photo['photoId'] ?? uniqid('photo_');
+                    $photoType = $photo['type'] ?? 'unknown';
+                    $ext = pathinfo(parse_url($photoUrl, PHP_URL_PATH), PATHINFO_EXTENSION);
+                    $filename = $photoType . '_' . $photoId . ($ext ? '.' . $ext : '.jpg');
+                    $filePath = $uploadDir . $filename;
 
-        // process uploaded files
-        $uploadedFiles = [];
-        foreach ($this->images['tmp_name'] as $key => $tmpName) {
-            if ($this->images['error'][$key] === UPLOAD_ERR_OK) {
-                $filename = basename($this->images['name'][$key]);
-                $targetFile = $uploadDir . "/" . $filename;
-
-                if (move_uploaded_file($tmpName, $targetFile)) {
-                    $uploadedFiles[] = $filename;
+                    // Download image and save to disk
+                    try {
+                        $imgRes = $this->client->get($photoUrl, ['sink' => $filePath]);
+                        if ($imgRes->getStatusCode() === 200 && file_exists($filePath)) {
+                            $photosSaved[] = $filename;
+                        }
+                    } catch (\Exception $e) {
+                        // Could not download image, skip
+                    }
                 }
             }
         }
+        return $photosSaved;
     }
 
 }
