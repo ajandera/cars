@@ -5,10 +5,8 @@
 
 namespace Core\Instacover\Controller;
 
-use Core\Instacover\Helpers\DatabaseHandler;
-use Core\Instacover\Models\Zastava;
+use Core\Instacover\Models\Poptavka;
 use GuzzleHttp\Client;
-use DateTime;
 use Core\Instacover\Helpers\Hash;
 use Core\Instacover\Helpers\ImageUploader;
 
@@ -21,17 +19,21 @@ class InstacoverController
     private string $table;
     private string $uploadDir;
     private Client $client;
-    private string $username;
-    private string $password;
+    private string $clientId;
+    private string $clientSecret;
     private string $baseUri;
     private Hash $hash;
+
+    private string $callbackUrl;
 
     public function __construct(
         string $table,
         string $uploadDir,
-        string $username,
-        string $password,
-        string $baseUri)
+        string $clientId,
+        string $clientSecret,
+        string $baseUri,
+        string $callbackUrl,
+        string $salt)
     {
         $this->table = $table;
         // Ensure the upload directory ends with a slash
@@ -40,9 +42,10 @@ class InstacoverController
             'base_uri' => $baseUri,
             'timeout'  => 10,
         ]);
-        $this->username = $username;
-        $this->password = $password;
-        $this->hash = new Hash();
+        $this->clientId = $clientId;
+        $this->clientSecret = $clientSecret;
+        $this->hash = new Hash($salt);
+        $this->callbackUrl = $callbackUrl;
     }
 
     public function getSession()
@@ -68,27 +71,43 @@ class InstacoverController
         $accessToken = $this->getAccessToken();
 
         if ($accessToken === null) {
-            $this->sendResponse(401, ['error' => 'Unauthorized. Invalid or missing API key.']);
+            $this->sendResponse(401, ['error' => 'Unauthorized. Invalid or missing token.']);
             return;
         }
 
         try {
+            $url = $this->callbackUrl . '/object/instacover/object.instacover.callback?id=' . $this->hash->hashData($data['id']);
             $res = $this->client->post('/instacar/v2.0/session/create', [
                 'json' => [
-                    'callbackUrl' => 'core.local/api/instacover/callback?id=' . $this->hash->hashData($data['id'])
+                    'callbackUrl' => $url,
+                    'forcedFilesystemPhotoUpload' => true,
+                    'documentsFilesystemPhotoUpload' => true
                 ],
                 'headers' => [
                     'Accept' => 'application/json',
-                    'Bearer' => $accessToken
+                    'Authorization' => 'Bearer ' . $accessToken,
                 ],
             ]);
 
-            $zastava = new Zastava($data['id'], $this->table);
-            $res = $zastava->saveSesionId($res['sessionId']);
+            if ($res->getStatusCode() !== 200 && $res->getStatusCode() !== 201) {
+                $this->sendResponse(200, [
+                    'status' => 'ERROR',
+                    'msg' => 'Session not created'
+                ]);
+            }
+
+            $payload = json_decode($res->getBody()->getContents(), true);
+
+            $poptavka = new Poptavka($data['id'], $this->table);
+
+            $res = $poptavka->saveSesionId($payload['sessionId']);
 
             $response = [
-                'status' => 'OK',
-                'msg' => 'Session created'
+                'status' => $res ? 'OK' : 'ERROR',
+                'msg' => $res ? 'Session created' : 'session not saved',
+                'url' => $payload['link'],
+                'session' => $payload['sessionId'],
+                'callback' => $url
             ];
 
             $this->sendResponse(200, $response);
@@ -124,30 +143,45 @@ class InstacoverController
                 $this->sendResponse(400, ['error' => 'Invalid id parameter.']);
                 return;
             }
-            $row = new Zastava($decodedId, $this->table);
-            $sessionId = $row->getZastavaSessionId();
+
+            $id = (int) $decodedId;
+            $row = new Poptavka($id, $this->table);
+            $sessionId = $row->getPoptavkaSessionId();
 
             $res = $this->client->post('/instacar/v2.0/session/result', [
                 'json' => [
                     'sessionId' => $sessionId
                 ],
                 'headers' => [
-                    'Accept' => 'application/json',
-                    'Bearer' => $accessToken
+                    'Accept' => 'application/json', 
+                    'Authorization' => 'Bearer ' . $accessToken,
                 ],
             ]);
 
             // Get response body and decode JSON
             $body = $res->getBody()->getContents();
-            $responseData = json_decode($body, true);
-            $uploader = new ImageUploader($responseData['photos'], $decodedId, $this->uploadDir, $this->client);
-            $photosSaved = $uploader->upload();
+            
+            // test mock
+            //$body = file_get_contents(__DIR__ ."/mock.json");
 
-            $response = [
-                'status' => 'OK',
-                'msg' => 'Session result processed',
-                'photos_saved' => $photosSaved
-            ];
+            $responseData = json_decode($body, true);
+            
+            if (!empty($responseData['photos'])) {
+                $uploader = new ImageUploader($responseData['photos'], $decodedId, $this->uploadDir, $this->client);
+                $photosSaved = $uploader->upload();
+
+                $response = [
+                    'status' => 'OK',
+                    'msg' => 'Images saved',
+                    'photos_saved' => $photosSaved
+                ];
+            } else {
+                $response = [
+                    'status' => 'OK',
+                    'msg' => 'No images found',
+                    'photos_saved' => null
+                ];
+            }
 
             $this->sendResponse(200, $response);
 
@@ -173,34 +207,28 @@ class InstacoverController
     private function getAccessToken(): ?string
     {
         try {
-            $res = $this->client->post('/auth/login', [
-                'json' => [
-                    'grant_type' => 'all',
-                    'username' => $this->username,
-                    'password' => $this->password,
+           $res = $this->client->post('/oauth/v1.0/token', [
+                'form_params' => [
+                    'grant_type'    => 'client_credentials',
+                    'client_id'     => $this->clientId,
+                    'client_secret' => $this->clientSecret,
+                    'scope'         => 'categorization',
                 ],
                 'headers' => [
-                    'Accept' => 'application/json',
+                    'Accept'       => 'application/json',
+                    'Content-Type' => 'application/x-www-form-urlencoded',
                 ],
             ]);
 
             if ($res->getStatusCode() !== 200 && $res->getStatusCode() !== 201) {
-                echo "Login failed: " . $res->getBody();
-                exit(1);
+                return null;
             }
 
             $payload = json_decode($res->getBody()->getContents(), true);
-            $token = $payload['token'] ?? $payload['access_token'] ?? null;
-
-            if (!$token) {
-                echo "No token in response\n";
-                exit(1);
-            }
-
-            return $token;
+            return $payload['access_token'] ?? null;
 
         } catch (\Exception $e) {
-            // Log the exception or handle it as needed
+            // Log the exception or handle it as needed\
             return null;
         }
     }

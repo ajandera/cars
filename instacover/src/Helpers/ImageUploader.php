@@ -2,7 +2,7 @@
 /**
  * FilePackager Class
  */
-namespace Core\Instavocer\Helpers;
+namespace Core\Instacover\Helpers;
 
 use GuzzleHttp\Client;
 
@@ -50,12 +50,20 @@ class ImageUploader
                     $ext = pathinfo(parse_url($photoUrl, PHP_URL_PATH), PATHINFO_EXTENSION);
                     $filename = $photoType . '_' . $photoId . ($ext ? '.' . $ext : '.jpg');
                     $filePath = $uploadDir . $filename;
-
+                    var_dump($filePath);
+                    
                     // Download image and save to disk
                     try {
                         $imgRes = $this->client->get($photoUrl, ['sink' => $filePath]);
                         if ($imgRes->getStatusCode() === 200 && file_exists($filePath)) {
                             $photosSaved[] = $filename;
+                            coreDBInsert(
+                                INSTACOVER_FILES_TABLE,
+                                ['id_souvisi', 'prirazeni_alias', 'obrazek', 'stav', 'poradi'],
+                                ['id_souvisi' => $this->recordId,
+                                'prirazeni_alias' => INSTACOVER_DATABASE_ALIAS,
+                                'obrazek' => $filePath,
+                                'poradi' => (count($photosSaved))]);
                         }
                     } catch (\Exception $e) {
                         // Could not download image, skip

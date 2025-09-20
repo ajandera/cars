@@ -2,24 +2,24 @@
 
 namespace Core\Instacover\Models;
 
-class Zastava
+class Poptavka
 {
     private ?int $id = null;
 
-    private ?array $zastava = null;
+    private ?array $poptavka = null;
 
     private string $table;
 
     public function __construct(int $id, string $table)
     {
-        $this->id = $this->$id;
+        $this->id = $id;
         $this->table = $table;
-        $this->zastava = $this->loadRow();
+        $this->poptavka = $this->loadRow();
     }
 
     private function loadRow(): ?array
     {
-        $sql = coreDBSel("SELECT * FROM `" . $this->table . "` WHERE id = ?", [$this->id]);
+        $sql = coreDBSel("SELECT * FROM {$this->table} WHERE id = ?", [$this->id]);
 
         if ($sql && $sql->recordCount() > 0) {
             return $sql->fetchRow();
@@ -30,17 +30,17 @@ class Zastava
 
     public function saveSesionId(string $sessionId): bool
     {
-        if (!$this->zastava) {
+        if (!$this->poptavka) {
             return false;
         }
 
-        $edit = ['session_id' => ['value' => $sessionId]];
-        $sql = coreDBEdit($this->table,$edit,"(id = '".$this->id."')",array(),1,true);
+        $edit = ['instacover_session_id' => ['value' => $sessionId]];
+        $sql = coreDBEdit($this->table,$edit,"(id = '".$this->id."')",[],1,true);
         return $sql ? true : false;
     }
 
-    public function getZastavaSessionId(): ?int
+    public function getPoptavkaSessionId(): ?string
     {
-        return $this->zastava['session_id'] ?? null;
+        return $this->poptavka['instacover_session_id'] ?? null;
     }
 }

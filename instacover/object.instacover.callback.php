@@ -16,6 +16,8 @@
 
 use Core\Instacover\Controller\InstacoverController;
 
+require_once "config.php";
+
 if ( !defined('HACORE') ) {
     exit;
 }
@@ -28,20 +30,12 @@ if (file_exists(__DIR__ . '/vendor/autoload.php')) {
     exit;
 }
 
-global $C;
-
-define( 'INSTACOVER_ZASTAVY_TABLE', $C->db_prefix . 'zastavy' );
-define( 'INSTACOVER_IMAGE_FOLDER', 'files/instacover/' );
-define('INSTACOVER_USERNAME', "xxx");
-define('INSTACOVER_PASSWORD', "zzz");
-define('INSTACOVER_BASEURI', "https://api.instacover.ai");
-
-header('Content-type: application/json');
-
 $instacover = new InstacoverController(
     INSTACOVER_ZASTAVY_TABLE,
     INSTACOVER_IMAGE_FOLDER,
-    INSTACOVER_USERNAME,
-    INSTACOVER_PASSWORD,
-    INSTACOVER_BASEURI);
-$instacover->getSession();
+    $C->INSTACOVER_CLIENT_ID,
+    $C->INSTACOVER_CLIENT_SECRET,
+    INSTACOVER_BASEURI,
+    CALLBACK_URL,
+    $C->INSTACOVER_SALT);
+$instacover->callback();

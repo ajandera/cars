@@ -1,1 +1,30 @@
-ALTER TABLE `core_zastavy` ADD `image_session_id` VARCHAR(20) NULL AFTER `source_hash`;
+## Use SQL
+    ALTER TABLE `core_poptavky` ADD `instacover_session_id` VARCHAR(30) NULL AFTER `daktela_record_id`;
+
+##  Add to global _config.php
+
+    // instacover
+    $C['INSTACOVER_CLIENT_ID'] = "0197ee1f-a7b3-768f-a2d9-e26144c7cce0";
+    $C['INSTACOVER_CLIENT_SECRET'] = "cmcvngmam0000e9ctenl6dc9x";
+    $C['ENVIROMENT'] = 'develop';
+    $C['INSTACOVER_SALT'] = 'dklshf3245ased3';
+
+## tests
+
+### Nette tester
+
+Actual tests
+
+- unit testy (getAccessToken success/failure)
+- validace chyb (missing id)
+- integration test (getSession s úspěšnou odpovědí mocku)
+
+Run tests:
+    vendor/bin/tester tests -s
+
+### Mock test
+
+For mock test go To InstacoverController and uncomment line 164
+
+
+

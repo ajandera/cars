@@ -1,0 +1,416 @@
+{
+  "sessionId": "string",
+  "sessionCreatedAt": "2020-07-09T05:25:32.259Z",
+  "sessionFinished": false,
+  "sessionFinishedAt": "1984-11-14T17:21:21.778Z",
+  "sessionCanceledAt": "1971-07-07T01:39:39.425Z",
+  "sessionExpireAt": "1992-10-17T16:37:21.261Z",
+  "sessionValid": true,
+  "photos": [
+    {
+      "photoId": "string",
+      "createdAt": "1979-08-28T03:06:50.235Z",
+      "updatedAt": "2013-02-19T09:10:53.068Z",
+      "type": "Vin",
+      "retries": 7274.738408724695,
+      "link": "https://picsum.photos/400/400",
+      "photoValid": true,
+      "modelsResults": {
+        "licensePlate": {
+          "confidence": 187.77828578105505,
+          "licensePlate": "string",
+          "expectedLicensePlate": "string",
+          "licensePlateMatch": true,
+          "licensePlateLevenshteinDistance": 7105.4983538463575,
+          "country": "string"
+        },
+        "odometerBrand": {
+          "confidence": 3518.978458579254,
+          "model": "string",
+          "brand": "string",
+          "expectedModel": "string",
+          "expectedBrand": "string",
+          "modelMatch": true,
+          "brandMatch": true
+        },
+        "brand": {
+          "confidence": 5421.397637372871,
+          "model": "string",
+          "brand": "string",
+          "expectedModel": "string",
+          "expectedBrand": "string",
+          "modelMatch": false,
+          "brandMatch": true
+        },
+        "damage": {
+          "confidence": 7959.095552573554,
+          "damage": "string",
+          "level": 9022.999785740425,
+          "boundingBoxes": [
+            {
+              "confidence": 1979.0200642734824,
+              "coords": [
+                9497.2460918916,
+                2968.897571833118,
+                2500.4483944005096,
+                7459.169200803497
+              ],
+              "level": 6201.3512932706335
+            },
+            {
+              "confidence": 4068.5129496654595,
+              "coords": [
+                5142.461522880928,
+                1842.2401280465328,
+                4694.448308876636,
+                2319.1390035110994
+              ],
+              "level": 7581.451579816078
+            }
+          ],
+          "damagedParts": [
+            "string",
+            "string"
+          ]
+        },
+        "damageWindshield": {
+          "confidence": 3479.1406470702223,
+          "damage": "string",
+          "level": 1461.5168843704819,
+          "boundingBoxes": [
+            {
+              "confidence": 4493.04730886632,
+              "coords": [
+                6727.6208345632795,
+                9861.453041746818,
+                7925.412789035857,
+                4710.580765149683
+              ],
+              "level": 3262.7591162175195
+            },
+            {
+              "confidence": 2326.776544864697,
+              "coords": [
+                7750.482794891056,
+                8105.102901594477,
+                5563.8587393824255,
+                9996.518122263327
+              ],
+              "level": 7917.012169726893
+            }
+          ],
+          "damagedParts": [
+            "string",
+            "string"
+          ]
+        },
+        "odometer": {
+          "confidence": 2260.4433969672045,
+          "odo": "string",
+          "expectedOdometer": "string",
+          "odometerDifference": 7858.2989546540775,
+          "odometerMileageType": "string"
+        },
+        "vin": {
+          "confidence": 6995.9011286847535,
+          "vin": "string",
+          "expectedVin": "string",
+          "vinMatch": false,
+          "vinLevenshteinDistance": 1902.0231145574007
+        },
+        "ocrMining": {
+          "key_0": {},
+          "key_1": {},
+          "key_2": {}
+        },
+        "carRegistrationCertificateFront": {
+          "owner": "string",
+          "residence": "string",
+          "documentId": "string",
+          "documentDate": "string",
+          "ownerOperator": "string",
+          "registrationDate": "string",
+          "registrationPlate": "string"
+        },
+        "carRegistrationCertificateBack": {
+          "brandTypVariantVersion": "string",
+          "brandModel": "string",
+          "vin": "string",
+          "vehicleType": "string",
+          "trailerWeight": "string",
+          "weight": "string",
+          "engineCapacity": "string",
+          "powerType": "string",
+          "enginePower": "string",
+          "seats": "string",
+          "standPlaces": "string",
+          "powerWeightRatio": "string",
+          "maxSpeed": "string",
+          "gearShifting": "string",
+          "color": "string",
+          "other": "string",
+          "trailerType": "string"
+        },
+        "taxiDetection": {
+          "isTaxi": true,
+          "confidence": 3943.0742402543938
+        },
+        "anomalyDetection": {
+          "hasAnomaly": true,
+          "texts": [
+            {
+              "text": "string",
+              "confidence": 1802.324595110505
+            },
+            {
+              "text": "string",
+              "confidence": 7233.896723750246
+            }
+          ]
+        },
+        "carNumberRecognition": {
+          "carNumber": "string",
+          "confidence": 8604.424300541737
+        }
+      },
+      "userModelMatch": "Exact",
+      "damagedParts": [
+        "string",
+        "string"
+      ],
+      "damageMarkers": [
+        {
+          "x": 6278.393713797892,
+          "y": 9345.796543152812
+        },
+        {
+          "x": 1999.2645869533421,
+          "y": 6659.261756403059
+        }
+      ],
+      "geolocation": {
+        "latitude": 2789.0251099127017,
+        "longitude": 1009.3649827943563,
+        "accuracy": 2253.996605160509
+      },
+      "browserModelResult": {
+        "predictTime": 9078.157640793635,
+        "preprocessTime": 8340.223651036975,
+        "carView": {
+          "label": "string",
+          "confidence": 3193.00336667367
+        },
+        "quality": {
+          "label": "string",
+          "confidence": 463.1874471485431
+        }
+      }
+    },
+    {
+      "photoId": "string",
+      "createdAt": "1996-04-17T22:10:36.761Z",
+      "updatedAt": "2013-02-24T14:46:45.437Z",
+      "type": "RearLeftSide",
+      "retries": 2580.53429705114,
+      "link": "https://picsum.photos/500/500",
+      "photoValid": false,
+      "modelsResults": {
+        "licensePlate": {
+          "confidence": 5172.2006153234815,
+          "licensePlate": "string",
+          "expectedLicensePlate": "string",
+          "licensePlateMatch": true,
+          "licensePlateLevenshteinDistance": 3177.5965347645483,
+          "country": "string"
+        },
+        "odometerBrand": {
+          "confidence": 9357.770164004058,
+          "model": "string",
+          "brand": "string",
+          "expectedModel": "string",
+          "expectedBrand": "string",
+          "modelMatch": true,
+          "brandMatch": false
+        },
+        "brand": {
+          "confidence": 5092.519446842498,
+          "model": "string",
+          "brand": "string",
+          "expectedModel": "string",
+          "expectedBrand": "string",
+          "modelMatch": true,
+          "brandMatch": false
+        },
+        "damage": {
+          "confidence": 8488.312599177987,
+          "damage": "string",
+          "level": 6323.789794831705,
+          "boundingBoxes": [
+            {
+              "confidence": 1898.7667605477698,
+              "coords": [
+                4741.73592533939,
+                7781.53003654166,
+                5542.838029535006,
+                5850.483931642694
+              ],
+              "level": 7682.123606527873
+            },
+            {
+              "confidence": 8976.020623061944,
+              "coords": [
+                9907.686115143231,
+                4928.9234405714,
+                8793.753503278253,
+                1271.8237587150716
+              ],
+              "level": 2890.9689237761872
+            }
+          ],
+          "damagedParts": [
+            "string",
+            "string"
+          ]
+        },
+        "damageWindshield": {
+          "confidence": 1967.949851334605,
+          "damage": "string",
+          "level": 9615.176216448584,
+          "boundingBoxes": [
+            {
+              "confidence": 6366.354253542592,
+              "coords": [
+                7847.245806759917,
+                2894.921928724443,
+                2847.127907898579,
+                8722.514040813225
+              ],
+              "level": 6174.9672270301235
+            },
+            {
+              "confidence": 8693.704822765709,
+              "coords": [
+                5315.55725865628,
+                7406.382179208075,
+                2488.124653456916,
+                5586.271187254728
+              ],
+              "level": 2241.199527470994
+            }
+          ],
+          "damagedParts": [
+            "string",
+            "string"
+          ]
+        },
+        "odometer": {
+          "confidence": 9305.896670180791,
+          "odo": "string",
+          "expectedOdometer": "string",
+          "odometerDifference": 5818.647773716459,
+          "odometerMileageType": "string"
+        },
+        "vin": {
+          "confidence": 1701.7607708791793,
+          "vin": "string",
+          "expectedVin": "string",
+          "vinMatch": false,
+          "vinLevenshteinDistance": 4190.360136790554
+        },
+        "ocrMining": {
+          "key_0": {},
+          "key_1": {},
+          "key_2": {}
+        },
+        "carRegistrationCertificateFront": {
+          "owner": "string",
+          "residence": "string",
+          "documentId": "string",
+          "documentDate": "string",
+          "ownerOperator": "string",
+          "registrationDate": "string",
+          "registrationPlate": "string"
+        },
+        "carRegistrationCertificateBack": {
+          "brandTypVariantVersion": "string",
+          "brandModel": "string",
+          "vin": "string",
+          "vehicleType": "string",
+          "trailerWeight": "string",
+          "weight": "string",
+          "engineCapacity": "string",
+          "powerType": "string",
+          "enginePower": "string",
+          "seats": "string",
+          "standPlaces": "string",
+          "powerWeightRatio": "string",
+          "maxSpeed": "string",
+          "gearShifting": "string",
+          "color": "string",
+          "other": "string",
+          "trailerType": "string"
+        },
+        "taxiDetection": {
+          "isTaxi": true,
+          "confidence": 1415.8397998359562
+        },
+        "anomalyDetection": {
+          "hasAnomaly": true,
+          "texts": [
+            {
+              "text": "string",
+              "confidence": 7670.280255126149
+            },
+            {
+              "text": "string",
+              "confidence": 7345.009557118622
+            }
+          ]
+        },
+        "carNumberRecognition": {
+          "carNumber": "string",
+          "confidence": 2517.935803347937
+        }
+      },
+      "userModelMatch": "Exact",
+      "damagedParts": [
+        "string",
+        "string"
+      ],
+      "damageMarkers": [
+        {
+          "x": 4784.5393412003405,
+          "y": 1439.0456951840313
+        },
+        {
+          "x": 2678.4696057799874,
+          "y": 4492.526638165948
+        }
+      ],
+      "geolocation": {
+        "latitude": 7364.775563679651,
+        "longitude": 851.8812141372689,
+        "accuracy": 2106.8278972713883
+      },
+      "browserModelResult": {
+        "predictTime": 2887.92635999231,
+        "preprocessTime": 4030.6937084606643,
+        "carView": {
+          "label": "string",
+          "confidence": 1470.7062493591372
+        },
+        "quality": {
+          "label": "string",
+          "confidence": 5451.081282082399
+        }
+      }
+    }
+  ],
+  "caseId": "string",
+  "secondaryCaseId": "string",
+  "extraPayloadData": {
+    "key_0": {},
+    "key_1": {},
+    "key_2": {}
+  }
+}

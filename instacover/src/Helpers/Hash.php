@@ -3,7 +3,10 @@
 namespace Core\Instacover\Helpers;
 class Hash 
 {
-    private string $salt = 'dklshf3245ased3';
+    private string $salt;
+    public function __construct(string $salt) {
+        $this->salt = $salt;
+    }
 
     /**
      * Hashes the given data using a secure algorithm.
