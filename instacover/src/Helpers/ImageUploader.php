@@ -50,7 +50,6 @@ class ImageUploader
                     $ext = pathinfo(parse_url($photoUrl, PHP_URL_PATH), PATHINFO_EXTENSION);
                     $filename = $photoType . '_' . $photoId . ($ext ? '.' . $ext : '.jpg');
                     $filePath = $uploadDir . $filename;
-                    var_dump($filePath);
                     
                     // Download image and save to disk
                     try {
