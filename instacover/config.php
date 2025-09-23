@@ -7,5 +7,5 @@ define( 'INSTACOVER_IMAGE_FOLDER', $C->ROOT_PATH . DIRECTORY_SEPARATOR . 'var' .
 define('INSTACOVER_BASEURI', "https://api.instacover.ai");
 define( 'INSTACOVER_FILES_TABLE', $C->db_prefix . 'prirazene_obrazky');
 define( 'INSTACOVER_DATABASE_ALIAS', 'instacover_poptavky');
-define('CALLBACK_URL', $C->ENVIROMENT === "develop" ? "http://core.local" : "");
+define('CALLBACK_URL', getConfig('instacover_callback'));
 header('Content-type: application/json');
