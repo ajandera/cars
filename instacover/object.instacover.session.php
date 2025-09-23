@@ -16,7 +16,7 @@
 
 use Core\Instacover\Controller\InstacoverController;
 
-require_once "config.php";
+require_once "_config_instacover.php";
 
 if ( !defined('HACORE') ) {
     exit;
@@ -33,10 +33,10 @@ if (file_exists(__DIR__ . '/vendor/autoload.php')) {
 $instacover = new InstacoverController(
     INSTACOVER_ZASTAVY_TABLE,
     INSTACOVER_IMAGE_FOLDER,
-    $C->INSTACOVER_CLIENT_ID,
-    $C->INSTACOVER_CLIENT_SECRET,
+    INSTACOVER_CLIENT_ID,
+    INSTACOVER_CLIENT_SECRET,
     INSTACOVER_BASEURI,
     CALLBACK_URL,
-    $C->INSTACOVER_SALT,
+    INSTACOVER_SALT,
 SETTING_TABLE);
 $instacover->getSession();

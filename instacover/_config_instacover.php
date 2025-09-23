@@ -9,4 +9,7 @@ define( 'INSTACOVER_FILES_TABLE', $C->db_prefix . 'prirazene_obrazky');
 define( 'INSTACOVER_DATABASE_ALIAS', 'instacover_poptavky');
 define('CALLBACK_URL', getConfig('instacover_callback'));
 define('SETTING_TABLE', $C->db_prefix . 'settings');
+define('INSTACOVER_CLIENT_ID', getConfig('instacover_client_id'));
+define('INSTACOVER_CLIENT_SECRET', getConfig('instacover_client_secret'));
+define('INSTACOVER_SALT', getConfig('instacover_salt'));
 header('Content-type: application/json');

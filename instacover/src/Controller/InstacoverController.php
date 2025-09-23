@@ -210,34 +210,19 @@ class InstacoverController
     private function getAccessToken(): ?string
     {
         try {
-            // 1. Try to fetch token from DB
-            $sql = coreDBSel(
-                "SELECT value 
-                FROM ".$this->settingTable."
-                WHERE alias = ? 
-                LIMIT 1",
-                ['instacover_token']
-            );
+            // Try to fetch token from DB
+            $token = getConfig('instacover_token');
 
-            $sqlExp = coreDBSel(
-                "SELECT value 
-                FROM ".$this->settingTable."
-                WHERE alias = ? 
-                LIMIT 1",
-                ['instacover_expiration']
-            );
+            $exp = getConfig('instacover_expiration');
 
-            if ($sql && $sql->recordCount() > 0 && $sqlExp && $sqlExp->recordCount()) {
-                $token = $sql->fetchRow();
-                $exp = $sqlExp->fetchRow();
-
+            if ($token && $exp) {
                 // if not expired, return it
-                if (!empty($token['instacover_token']) && strtotime($exp['instacover_expiration']) > time()) {
-                    return $token['instacover_token'];
+                if (strtotime($exp) > time()) {
+                    return $token;
                 }
             }
 
-            // 2. Otherwise, request a new token
+            // Otherwise, request a new token
             $res = $this->client->post('/oauth/v1.0/token', [
                 'form_params' => [
                     'grant_type'    => 'client_credentials',
@@ -269,7 +254,7 @@ class InstacoverController
 
             // Save into DB (update if exists, insert otherwise)
             // First check if row exists
-            if ($sql && $sql->recordCount() > 0) {
+            if ($token && $exp) {
                 coreDBEditSingle($this->settingTable, "value", $accessToken, "alias = 'instacover_token'");
                 coreDBEditSingle($this->settingTable, "value", $expiresAt, "alias = 'instacover_expiration'");
             } else {

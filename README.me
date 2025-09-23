@@ -1,13 +1,18 @@
 ## Use SQL
     ALTER TABLE `core_poptavky` ADD `instacover_session_id` VARCHAR(30) NULL AFTER `daktela_record_id`;
 
-##  Add to global _config.php
+    INSERT INTO `core_settings` (`id`, `alias`, `value`, `info`, `typ`, `kategorie`, `subkategorie`) VALUES (NULL, 'instacover_callback', 'http://core.local', '', '', 'general', '');
 
-    // instacover
-    $C['INSTACOVER_CLIENT_ID'] = "0197ee1f-a7b3-768f-a2d9-e26144c7cce0";
-    $C['INSTACOVER_CLIENT_SECRET'] = "cmcvngmam0000e9ctenl6dc9x";
-    $C['ENVIROMENT'] = 'develop';
-    $C['INSTACOVER_SALT'] = 'dklshf3245ased3';
+    INSERT INTO `core_settings` (`id`, `alias`, `value`, `info`, `typ`, `kategorie`, `subkategorie`) VALUES (NULL, 'instacover_token', '', '', '', 'general', '');
+
+    INSERT INTO `core_settings` (`id`, `alias`, `value`, `info`, `typ`, `kategorie`, `subkategorie`) VALUES (NULL, 'instacover_expiration', '1', '', '', 'general', '');
+
+    INSERT INTO `core_settings` (`id`, `alias`, `value`, `info`, `typ`, `kategorie`, `subkategorie`) VALUES (NULL, 'instacover_client_id', '0197ee1f-a7b3-768f-a2d9-e26144c7cce0', '', '', 'general', '');
+
+    INSERT INTO `core_settings` (`id`, `alias`, `value`, `info`, `typ`, `kategorie`, `subkategorie`) VALUES (NULL, 'instacover_client_secret', 'cmcvngmam0000e9ctenl6dc9x', '', '', 'general', '');
+
+    INSERT INTO `core_settings` (`id`, `alias`, `value`, `info`, `typ`, `kategorie`, `subkategorie`) VALUES (NULL, 'instacover_salt', 'dklshf3245ased3', '', '', 'general', '');
+
 
 ## tests
 
@@ -24,11 +29,4 @@ Run tests:
 
 ### Mock test
 
-For mock test go To InstacoverController and uncomment line 164
-
-
-INSERT INTO `core_settings` (`id`, `alias`, `value`, `info`, `typ`, `kategorie`, `subkategorie`) VALUES (NULL, 'instacover_callback', 'http://core.local', '', '', 'general', '');
-
-INSERT INTO `core_settings` (`id`, `alias`, `value`, `info`, `typ`, `kategorie`, `subkategorie`) VALUES (NULL, 'instacover_token', '', '', '', 'general', '');
-
-INSERT INTO `core_settings` (`id`, `alias`, `value`, `info`, `typ`, `kategorie`, `subkategorie`) VALUES (NULL, 'instacover_expiration', '1', '', '', 'general', '');
+For mock test go To InstacoverController and uncomment line 164 
