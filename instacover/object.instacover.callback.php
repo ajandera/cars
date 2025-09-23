@@ -37,5 +37,6 @@ $instacover = new InstacoverController(
     $C->INSTACOVER_CLIENT_SECRET,
     INSTACOVER_BASEURI,
     CALLBACK_URL,
-    $C->INSTACOVER_SALT);
+    $C->INSTACOVER_SALT,
+SETTING_TABLE);
 $instacover->callback();

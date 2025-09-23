@@ -23,6 +23,7 @@ class InstacoverController
     private string $clientSecret;
     private string $baseUri;
     private Hash $hash;
+    private string $settingTable;
 
     private string $callbackUrl;
 
@@ -33,7 +34,8 @@ class InstacoverController
         string $clientSecret,
         string $baseUri,
         string $callbackUrl,
-        string $salt)
+        string $salt,
+        string $settingTable)
     {
         $this->table = $table;
         // Ensure the upload directory ends with a slash
@@ -46,6 +48,7 @@ class InstacoverController
         $this->clientSecret = $clientSecret;
         $this->hash = new Hash($salt);
         $this->callbackUrl = $callbackUrl;
+        $this->settingTable = $settingTable;
     }
 
     public function getSession()
@@ -207,7 +210,35 @@ class InstacoverController
     private function getAccessToken(): ?string
     {
         try {
-           $res = $this->client->post('/oauth/v1.0/token', [
+            // 1. Try to fetch token from DB
+            $sql = coreDBSel(
+                "SELECT value 
+                FROM ".$this->settingTable."
+                WHERE alias = ? 
+                LIMIT 1",
+                ['instacover_token']
+            );
+
+            $sqlExp = coreDBSel(
+                "SELECT value 
+                FROM ".$this->settingTable."
+                WHERE alias = ? 
+                LIMIT 1",
+                ['instacover_expiration']
+            );
+
+            if ($sql && $sql->recordCount() > 0 && $sqlExp && $sqlExp->recordCount()) {
+                $token = $sql->fetchRow();
+                $exp = $sqlExp->fetchRow();
+
+                // if not expired, return it
+                if (!empty($token['instacover_token']) && strtotime($exp['instacover_expiration']) > time()) {
+                    return $token['instacover_token'];
+                }
+            }
+
+            // 2. Otherwise, request a new token
+            $res = $this->client->post('/oauth/v1.0/token', [
                 'form_params' => [
                     'grant_type'    => 'client_credentials',
                     'client_id'     => $this->clientId,
@@ -225,10 +256,38 @@ class InstacoverController
             }
 
             $payload = json_decode($res->getBody()->getContents(), true);
-            return $payload['access_token'] ?? null;
+
+            if (empty($payload['access_token'])) {
+                return null;
+            }
+
+            $accessToken = $payload['access_token'];
+            $expiresIn   = isset($payload['expires_in']) ? (int) $payload['expires_in'] : 3600;
+
+            // Calculate expiration timestamp (5 minutes safety margin)
+            $expiresAt = date('Y-m-d H:i:s', time() + $expiresIn - 300);
+
+            // Save into DB (update if exists, insert otherwise)
+            // First check if row exists
+            if ($sql && $sql->recordCount() > 0) {
+                coreDBEditSingle($this->settingTable, "value", $accessToken, "alias = 'instacover_token'");
+                coreDBEditSingle($this->settingTable, "value", $expiresAt, "alias = 'instacover_expiration'");
+            } else {
+                coreDBInsert($this->settingTable, [
+                    "alias"    => 'instacover_token',
+                    "access_token" => $accessToken
+                ]);
+
+                coreDBInsert($this->settingTable, [
+                    "alias"    => 'instacover_expiration',
+                    "value" => $expiresAt
+                ]);
+            }
+
+            return $accessToken;
 
         } catch (\Exception $e) {
-            // Log the exception or handle it as needed\
+            // Log or handle
             return null;
         }
     }
