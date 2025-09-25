@@ -14,29 +14,6 @@ if (!defined('HACORE')) {
     exit;
 }
 
-/**
- * InstacoverController handles API requests related to Instacover sessions and callbacks.
- *
- * Responsibilities:
- * - Creating sessions with Instacover API and saving session IDs.
- * - Handling callback requests to fetch session results and save images.
- * - Managing access tokens for API authentication, including caching and refreshing.
- * - Sending standardized JSON responses for API endpoints.
- *
- * Dependencies:
- * - Poptavka: Model for handling database operations related to requests.
- * - GuzzleHttp\Client: HTTP client for making API requests.
- * - Hash: Helper for encoding/decoding IDs.
- * - ImageUploader: Helper for saving images from API responses.
- *
- * Endpoints:
- * - getSession(): POST /instacover/session - Creates a new Instacover session.
- * - callback(): GET /instacover/callback - Handles Instacover callback and saves images.
- *
- * Private Methods:
- * - sendResponse(): Sends a JSON response with HTTP status code.
- * - getAccessToken(): Retrieves or refreshes the Instacover API access token.
- */
 class InstacoverController
 {
     private string $table;
@@ -145,12 +122,12 @@ class InstacoverController
 
     public function callback() 
     {
-        if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             $this->sendResponse(405, ['error' => 'Invalid request method.']);
             return;
         }
 
-        if (!isset($_GET['id'])) {
+        if (!isset($_GET['id']) && !isset($_POSTT['id'])) {
             $this->sendResponse(400, ['error' => 'Missing required GET parameter: id']);
             return;
         }
@@ -283,12 +260,16 @@ class InstacoverController
             } else {
                 coreDBInsert($this->settingTable, [
                     "alias"    => 'instacover_token',
-                    "access_token" => $accessToken
+                    "access_token" => $accessToken,
+                    "kategorie" => "_CORE",
+                    "subkategorie" => "API"
                 ]);
 
                 coreDBInsert($this->settingTable, [
                     "alias"    => 'instacover_expiration',
-                    "value" => $expiresAt
+                    "value" => $expiresAt,
+                    "kategorie" => "_CORE",
+                    "subkategorie" => "API"
                 ]);
             }
 

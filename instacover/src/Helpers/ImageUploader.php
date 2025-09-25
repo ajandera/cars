@@ -61,7 +61,7 @@ class ImageUploader
                                 ['id_souvisi', 'prirazeni_alias', 'obrazek', 'stav', 'poradi'],
                                 ['id_souvisi' => $this->recordId,
                                 'prirazeni_alias' => INSTACOVER_DATABASE_ALIAS,
-                                'obrazek' => $filePath,
+                                'obrazek' => $this->modifyFilePath($filePath),
                                 'poradi' => (count($photosSaved))]);
                         }
                     } catch (\Exception $e) {
@@ -71,6 +71,19 @@ class ImageUploader
             }
         }
         return $photosSaved;
+    }
+
+    private function modifyFilePath($dir): string
+    {
+        $keyword = 'files';
+        $position = strpos($dir, $keyword);
+
+        if ($position !== false) {
+            return substr($dir, $position);
+        }
+
+        return $dir;
+
     }
 
 }
