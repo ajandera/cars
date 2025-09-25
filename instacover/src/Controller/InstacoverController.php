@@ -14,6 +14,28 @@ if (!defined('HACORE')) {
     exit;
 }
 
+/**
+ * InstacoverController
+ *
+ * This controller handles API interactions with the Instacover service, including session creation,
+ * callback processing, and access token management. It integrates with Guzzle for HTTP requests,
+ * manages session IDs and image uploads, and provides JSON responses for API endpoints.
+ *
+ * Main responsibilities:
+ * - Create Instacover sessions and save session IDs.
+ * - Handle callbacks from Instacover, fetch session results, and save uploaded images.
+ * - Manage OAuth access tokens, including caching and refreshing.
+ * - Provide utility methods for sending JSON responses.
+ *
+ * Dependencies:
+ * - Core\Instacover\Models\Poptavka: Model for handling session IDs and related data.
+ * - GuzzleHttp\Client: HTTP client for API requests.
+ * - Core\Instacover\Helpers\Hash: Helper for hashing and decoding IDs.
+ * - Core\Instacover\Helpers\ImageUploader: Helper for saving images from Instacover.
+ *
+ * Usage:
+ * Instantiate with required configuration and call public methods for API endpoints.
+ */
 class InstacoverController
 {
     private string $table;
@@ -27,6 +49,17 @@ class InstacoverController
 
     private string $callbackUrl;
 
+
+    /**
+     * @param string $table
+     * @param string $uploadDir
+     * @param string $clientId
+     * @param string $clientSecret
+     * @param string $baseUri
+     * @param string $callbackUrl
+     * @param string $salt
+     * @param string $settingTable
+     */
     public function __construct(
         string $table,
         string $uploadDir,
@@ -51,6 +84,10 @@ class InstacoverController
         $this->settingTable = $settingTable;
     }
 
+    /**
+     * Summary of getSession
+     * @return void
+     */
     public function getSession()
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -120,6 +157,10 @@ class InstacoverController
         }
     }
 
+    /**
+     * Summary of callback
+     * @return void
+     */
     public function callback() 
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -164,10 +205,6 @@ class InstacoverController
 
             // Get response body and decode JSON
             $body = $res->getBody()->getContents();
-            
-            // test mock
-            //$body = file_get_contents(__DIR__ ."/mock.json");
-
             $responseData = json_decode($body, true);
             
             if (!empty($responseData['photos'])) {
@@ -211,6 +248,10 @@ class InstacoverController
         exit;
     }
 
+    /**
+     * Summary of getAccessToken
+     * @return string|null
+     */
     private function getAccessToken(): ?string
     {
         try {

@@ -11,9 +11,9 @@ if (!defined('HACORE')) {
 }
 
 /**
- * Class FilePackager
+ * Class ImageUploader
  *
- * This class is responsible for packaging files from a source directory to a target directory.
+ * This class is responsible for uploading from instacover.
  */
 class ImageUploader
 {
@@ -25,6 +25,13 @@ class ImageUploader
     private string $dir;
     private Client $client;
 
+    /**
+     * Summary of __construct
+     * @param array $images
+     * @param int $recordId
+     * @param string $dir
+     * @param \GuzzleHttp\Client $client
+     */
     public function __construct( array $images, int $recordId , string $dir, Client $client)
     {
         $this->images = $images;
@@ -33,6 +40,10 @@ class ImageUploader
         $this->client = $client;
     }
 
+    /**
+     * Summary of upload
+     * @return string[]
+     */
     public function upload(): array
     {
         // Save images from photos array
@@ -73,6 +84,11 @@ class ImageUploader
         return $photosSaved;
     }
 
+    /**
+     * Summary of modifyFilePath
+     * @param mixed $dir
+     * @return string
+     */
     private function modifyFilePath($dir): string
     {
         $keyword = 'files';

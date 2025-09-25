@@ -2,6 +2,14 @@
 
 namespace Core\Instacover\Models;
 
+/**
+ * Class Poptavka
+ *
+ * Represents a model for handling "Poptavka" (inquiry/request) data within the application.
+ * Provides functionality for managing and interacting with inquiry records.
+ *
+ * @package App\Models
+ */
 class Poptavka
 {
     private ?int $id = null;
@@ -10,6 +18,11 @@ class Poptavka
 
     private string $table;
 
+    /**
+     * Summary of __construct
+     * @param int $id
+     * @param string $table
+     */
     public function __construct(int $id, string $table)
     {
         $this->id = $id;
@@ -17,6 +30,10 @@ class Poptavka
         $this->poptavka = $this->loadRow();
     }
 
+    /**
+     * Summary of loadRow
+     * @return array
+     */
     private function loadRow(): ?array
     {
         $sql = coreDBSel("SELECT * FROM {$this->table} WHERE id = ?", [$this->id]);
@@ -28,6 +45,11 @@ class Poptavka
         }
     }
 
+    /**
+     * Summary of saveSesionId
+     * @param string $sessionId
+     * @return bool
+     */
     public function saveSesionId(string $sessionId): bool
     {
         if (!$this->poptavka) {
@@ -39,6 +61,10 @@ class Poptavka
         return $sql ? true : false;
     }
 
+    /**
+     * Summary of getPoptavkaSessionId
+     * @rreturn string|null
+     */
     public function getPoptavkaSessionId(): ?string
     {
         return $this->poptavka['instacover_session_id'] ?? null;
