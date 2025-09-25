@@ -141,7 +141,8 @@ class InstacoverController
 
         try {
 
-            $decodedId = $this->hash->decodeHash($_GET['id']);
+            $sessionId = isset($_GET['id']) ? $_GET['id'] : $_POST['id']; 
+            $decodedId = $this->hash->decodeHash($sessionId);
             if ($decodedId === null) {
                 $this->sendResponse(400, ['error' => 'Invalid id parameter.']);
                 return;
@@ -173,6 +174,9 @@ class InstacoverController
                 $uploader = new ImageUploader($responseData['photos'], $decodedId, $this->uploadDir, $this->client);
                 $photosSaved = $uploader->upload();
 
+                // mark as done 
+                $row->saveSesionId("done_" . $sessionId);
+                
                 $response = [
                     'status' => 'OK',
                     'msg' => 'Images saved',
