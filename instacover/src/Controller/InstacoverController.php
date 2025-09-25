@@ -127,7 +127,7 @@ class InstacoverController
             return;
         }
 
-        if (!isset($_GET['id']) && !isset($_POSTT['id'])) {
+        if (!isset($_GET['id']) && !isset($_POST['id'])) {
             $this->sendResponse(400, ['error' => 'Missing required GET parameter: id']);
             return;
         }
@@ -176,7 +176,7 @@ class InstacoverController
 
                 // mark as done 
                 $row->saveSesionId("done_" . $sessionId);
-                
+
                 $response = [
                     'status' => 'OK',
                     'msg' => 'Images saved',
