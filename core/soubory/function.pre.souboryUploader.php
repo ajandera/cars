@@ -197,9 +197,9 @@ function coreSouboryUploader($nameIT,$DB_alias,$id_souvisi,$styl=1,$crop='1/1',$
 				  		{
 					  		if ($styl == 2)
 					  		{
-					  			echo '<a href="'.$secure_download.'" target="_blank" class="fancy"><img src="/'.getImageThumb($p_obrazek,200,200,true,$p_crop_x,$p_crop_y,$p_crop_w,$p_crop_h).'" class="img-responsive" id="imgThumb'.$p_zakprodID.'" style="vertical-align: top;" alt="" /></a> ';
+					  			echo '<a href="'.$secure_download.'" target="_blank" data-lightbox="gallery" class="fancy"><img src="/'.getImageThumb($p_obrazek,200,200,true,$p_crop_x,$p_crop_y,$p_crop_w,$p_crop_h).'" class="img-responsive" id="imgThumb'.$p_zakprodID.'" style="vertical-align: top;" alt="" /></a> ';
 					  		}else{
-					  			echo '<a href="'.$secure_download.'" target="_blank" class="fancy"><img src="/'.getImageThumb($p_obrazek,200,200,true,$p_crop_x,$p_crop_y,$p_crop_w,$p_crop_h).'" class="img-responsive" id="imgThumb'.$p_zakprodID.'" style="vertical-align: top;" alt="" /></a> ';
+					  			echo '<a href="'.$secure_download.'" target="_blank" data-lightbox="gallery" class="fancy"><img src="/'.getImageThumb($p_obrazek,200,200,true,$p_crop_x,$p_crop_y,$p_crop_w,$p_crop_h).'" class="img-responsive" id="imgThumb'.$p_zakprodID.'" style="vertical-align: top;" alt="" /></a> ';
 					  		}
 				  		}
 						else if (in_array(strtolower($xps['extension']),array('mp4')))
