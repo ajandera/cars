@@ -1,0 +1,29 @@
+{
+    "name": "core/instacover",
+    "description": "CORE Instacover integration",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Core\\Instacover\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Ales Jandera"
+        }
+    ],
+    "require": {
+        "guzzlehttp/guzzle": "^7.0"
+    },
+    "require-dev": {
+        "nette/tester": "^2.4"
+    },
+    "autoload-dev": {
+        "psr-4": {
+        "Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "tester tests -s"
+    }
+}
