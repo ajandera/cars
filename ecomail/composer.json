@@ -1,10 +1,10 @@
 {
-    "name": "core/instacover",
-    "description": "CORE Instacover integration",
+    "name": "core/ecomail",
+    "description": "CORE Ecomail integration",
     "type": "project",
     "autoload": {
         "psr-4": {
-            "Core\\Instacover\\": "src/"
+            "Core\\Ecomail\\": "src/"
         }
     },
     "authors": [

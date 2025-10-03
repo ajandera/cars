@@ -1,6 +1,6 @@
 <?php return array(
     'root' => array(
-        'name' => 'core/instacover',
+        'name' => 'core/ecomail',
         'pretty_version' => '1.0.0+no-version-set',
         'version' => '1.0.0.0',
         'reference' => null,
@@ -10,7 +10,7 @@
         'dev' => true,
     ),
     'versions' => array(
-        'core/instacover' => array(
+        'core/ecomail' => array(
             'pretty_version' => '1.0.0+no-version-set',
             'version' => '1.0.0.0',
             'reference' => null,

@@ -17,8 +17,8 @@ if (file_exists(__DIR__ . '/vendor/autoload.php')) {
 }
 
 $instacover = new EcomailController(
-    ECOMAIL_API_KEY,
     POPTAVKY_TABLE,
+    ECOMAIL_API_KEY,
     SETTING_TABLE
 );
 $instacover->export();

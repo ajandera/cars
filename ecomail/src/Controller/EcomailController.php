@@ -42,19 +42,31 @@ class EcomailController
             return;
         }
 
-        if (!isset($data['id']) && !isset($data['listId']) && !isset($data['dateFrom'])) {
+        if (!isset($data['countryId']) && !isset($data['listId']) && !isset($data['dateFrom'])) {
             $this->sendResponse(400, ['error' => 'Missing required POST parameter: id or listId']);
             return;
         }
 
+        // Vezmeme aktuální datum
+        $now = new \DateTime();
+
+        // Odečteme $monthsBack měsíců
+        $now->modify("-{$data['dateFrom']} months");
+
+        // Nastavíme den na 1 (první den měsíce)
+        $now->modify('first day of this month');
+
+        // Výsledek
+        $from = $now->format('Y-m-d');  // např. 2025-07-01
+
         // get poptavky ny time range an marketing = 1 a neni duplicitni
-        $sql = coreDBSel("SELECT * FROM ".$this->table ."WHERE date_add > ? AND marketing = 1", $data['dateFrom']);
+        $sql = coreDBSel("SELECT * FROM ".$this->table ."WHERE date_add > ? AND marketing = 1 and state IN(-2,-4,-5,-1) AND state = ?", [$from. $data['countryId']]);
         $subscribers = [];
         foreach($sql->fetchRows() as $row) {
             $subscribers[] = [
-                'email' => 'uzivatel1@example.com',
-                'name' => 'Jan',
-                'surname' => 'Novák'
+                'email' => $row['email'],
+                'name' => $row['jmeno'],
+                'surname' => $row['prijmeni']
             ];
         }
 

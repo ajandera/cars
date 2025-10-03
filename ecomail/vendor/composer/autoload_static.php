@@ -30,7 +30,7 @@ class ComposerStaticInitb45fc44819948f3da16831246b98510b
         ),
         'C' => 
         array (
-            'Core\\Instacover\\' => 16,
+            'Core\\Ecomail\\' => 13,
         ),
     );
 
@@ -60,7 +60,7 @@ class ComposerStaticInitb45fc44819948f3da16831246b98510b
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/guzzle/src',
         ),
-        'Core\\Instacover\\' => 
+        'Core\\Ecomail\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
         ),

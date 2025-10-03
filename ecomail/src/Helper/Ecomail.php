@@ -1,8 +1,6 @@
 <?php
 namespace Core\Ecomail\Helper;
 
-require __DIR__ . '/vendor/autoload.php';
-
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 
@@ -16,7 +14,7 @@ class Ecomail {
                 'Content-Type' => 'application/json',
                 'key' => $apiKey
             ],
-            'http_errors' => false // necháme si zpracovat odpovědi sami
+            'http_errors' => false
         ]);
     }
 

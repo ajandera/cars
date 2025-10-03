@@ -443,9 +443,35 @@ else
 		$sqlAll = coreDBSel("SELECT * FROM ".$C->db_prefix."poptavky WHERE 1=1 $addWHERE $addWHEREpay",$addWHEREArray);
 		$sqlAllCount = $sqlAll->recordCount();
 		echo '<a class="btn btn-primary" href="'.$C->dir.'poptavky/admin.poptavka/edit'.'">'.l('Přidat poptávku ručně').'</a>';
-		echo '<a class="btn btn-warning" href="'.$C->dir.'ecomail/object.admin.poptavka-export'.'">'.l('Export pro Ecomail').'</a>';
+		echo '<div class="btn btn-warning" id="openDialogEcomail">'.l('Export pro Ecomail').'</div>';
 		echo '<span class="btn btn-default marginL1" style="cursor:auto">'.$sqlAllCount.' '.l('záznamů').'</span>';
 
+		echo '<div id="ecomailDialog" title="Export do Ecomail" style="display:none">
+				<div id="loadingIndicator" style="display: none; text-align: center; color: blue;">
+					Načítám seznamy z Ecomailu...
+				</div>
+
+				<div class="form-group">
+					<label for="countrySelect">Vyberte stát:</label>
+					<select id="countrySelect">
+						<option value="CZ">Česká republika</option>
+						<option value="SK">Slovenská republika</option>
+						<option value="PL">Polsko</option>
+					</select>
+				</div>
+
+				<div class="form-group">
+					<label for="ecomailList">Vyberte Ecomail seznam:</label>
+					<select id="ecomailList" disabled>
+						<option value="">Nejprve se načítá...</option>
+					</select>
+				</div>
+				
+				<div class="form-group">
+					<label for="monthsBack">Počet měsíců zpět:</label>
+					<input type="number" id="monthsBack" min="1" max="120" value="6">
+				</div>
+			</div>';
         // Added by Tom
         if ( prava( 'admin-poptavky' ) && $sqlAllCount < 500 ) {
             $daktela_all_items = $sqlAll->getAll();
