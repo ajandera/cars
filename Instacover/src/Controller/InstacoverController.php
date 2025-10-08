@@ -191,8 +191,9 @@ class InstacoverController
                 $row->saveSesionId("done_" . $sessionId);
                 
                 //INST-8 send notification
-                $text = "Poptavka c." . $id . " dokoncena. Uzivatel dokoncil ficeni pres sluzbu Instacover." ;
-                send_email($text, "obchod@cash4car.cz", "Poptavka Instacover dokonceno.");
+                $text = l("Poptavka c. %no% dokoncena. Uzivatel dokoncil foceni pres sluzbu Instacover.", ['%no%' => $id]) ;
+                $subject = l("Poptavka Instacover dokonceno.");
+                send_email($text, "obchod@cash4car.cz", $subject);
                 $row->saveDoneSatus();
 
                 $response = [
