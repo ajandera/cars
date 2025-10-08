@@ -1,0 +1,7 @@
+INSERT INTO `core_settings` (`id`, `alias`, `value`, `info`, `typ`, `kategorie`, `subkategorie`) VALUES (NULL, 'instacover_client_id_de', '01999f0a-d0f7-778f-a755-d6ca193e9572', '', 'string', '_CORE', 'API');
+INSERT INTO `core_settings` (`id`, `alias`, `value`, `info`, `typ`, `kategorie`, `subkategorie`) VALUES (NULL, 'instacover_client_id_pl', '01999f0b-4c77-729f-9c7a-e2191006aa59', '', 'string', '_CORE', 'API');
+INSERT INTO `core_settings` (`id`, `alias`, `value`, `info`, `typ`, `kategorie`, `subkategorie`) VALUES (NULL, 'instacover_client_id_es', '01999f0b-9f07-724d-8b43-5352c7c9f027', '', 'string', '_CORE', 'API');
+
+INSERT INTO `core_settings` (`id`, `alias`, `value`, `info`, `typ`, `kategorie`, `subkategorie`) VALUES (NULL, 'instacover_client_secret_de', 'cmg7rjiwd0000rkctaglueac0', '', 'string', '_CORE', 'API');
+INSERT INTO `core_settings` (`id`, `alias`, `value`, `info`, `typ`, `kategorie`, `subkategorie`) VALUES (NULL, 'instacover_client_secret_pl', 'cmg7rjm650000rkct8lkkdzr3', '', 'string', '_CORE', 'API');
+INSERT INTO `core_settings` (`id`, `alias`, `value`, `info`, `typ`, `kategorie`, `subkategorie`) VALUES (NULL, 'instacover_client_secret_es', 'cmg7rjoqo0000rkctf1f583rw', '', 'string', '_CORE', 'API');
