@@ -47,7 +47,10 @@ class Ecomail {
     // Bulk subscribe
     public function subscribeBulk(int $listId, array $subscribers): array {
         return $this->request('POST', "/lists/{$listId}/subscribe-bulk", [
-            'subscribers' => $subscribers
+            "subscriber_data" => $subscribers,
+            "update_existing" => true,
+            "resubscribe" => false,
+            "trigger_autoresponders" => false
         ]);
     }
 }

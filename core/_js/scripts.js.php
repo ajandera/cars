@@ -1426,7 +1426,7 @@ $(function() {
 				})
 				.then(data => {
 					console.log("Odpověď backendu:", data);
-					alert("Nastavení uloženo");
+					alert("Ecomail vyexportovany.");
 				})
 				.catch(error => {
 					console.error("Chyba při exportu:", error);
@@ -1447,7 +1447,8 @@ $(function() {
     });
 
     // Tlačítko pro otevření dialogu
-    $(document).on('click', '#openDialogEcomail', function() {
+    $(document).on('click', '#openDialogEcomail', function(e) {
+		e.preventDefault();
         $(DIALOG_ID).dialog('open');
 		fetchEcomailLists();
     });

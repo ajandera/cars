@@ -58,16 +58,22 @@ class EcomailController
 
         // Výsledek
         $from = $now->format('Y-m-d');  // např. 2025-07-01
-
         // get poptavky ny time range an marketing = 1 a neni duplicitni
-        $sql = coreDBSel("SELECT * FROM ".$this->table ."WHERE date_add > ? AND marketing = 1 and state IN(-2,-4,-5,-1) AND state = ?", [$from. $data['countryId']]);
+        $sql = coreDBSel("SELECT * FROM ".$this->table ." WHERE date_add > ? AND marketing = 1 AND stav NOT IN(-2,-4,-5,-1) AND stat = ?", [$from, $data['countryId']]);
+
         $subscribers = [];
-        foreach($sql->fetchRows() as $row) {
-            $subscribers[] = [
-                'email' => $row['email'],
-                'name' => $row['jmeno'],
-                'surname' => $row['prijmeni']
-            ];
+        if ($sql)
+        {
+            if ($sql->recordCount() > 0) {
+                $fetchData = $sql->getAll();
+                foreach( $fetchData as $rowData ) {
+                    $subscribers[] = [
+                        'email'   => $rowData['email'],
+                        'name'    => $rowData['jmeno'],
+                        'surname' => $rowData['prijmeni']
+                    ];
+                }
+            }
         }
 
         $ecomail = new Ecomail($this->apikey);
