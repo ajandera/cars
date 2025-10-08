@@ -254,7 +254,7 @@ function coreSouboryUploader($nameIT,$DB_alias,$id_souvisi,$styl=1,$crop='1/1',$
         sequentialUploads: true,
         dropZone: null,
         pasteZone: null,
-        acceptFileTypes: /(\.|\/)(gif|jpe?g|png|pdf|doc|docx|xls|xlsx|ppt|mp4)$/i,
+        acceptFileTypes: /(\.|\/)(gif|jpe?g|png|heic|pdf|doc|docx|xls|xlsx|ppt|mp4)$/i,
         maxFileSize: 12000000 // 12 MB
     }).on('fileuploadadd', function (e, data) {
 
@@ -449,7 +449,7 @@ function coreSouboryUploaderZpracuj($namePOST,$DB_alias,$id_souvisi,$resizeWidth
 						if ($edit)
 						{
 							$uudi = $edit['id'];
-							$p_obrazek  =	handleUpload("{$namePOST}_aobrazek",$dirrr,false,true,$resizeWidth,$resizeHeight,$k,$thumbWidth,$thumbHeight,$cropImages,false,array('pdf','doc','docx','xls','xlsx','ppt','jpg','jpeg','png','gif','mp4'),12,array(6000,6000),75,$uudi);
+							$p_obrazek  =	handleUpload("{$namePOST}_aobrazek",$dirrr,false,true,$resizeWidth,$resizeHeight,$k,$thumbWidth,$thumbHeight,$cropImages,false,array('pdf','doc','docx','xls','xlsx','ppt','jpg','jpeg','heic','png','gif','mp4'),12,array(6000,6000),75,$uudi);
 							if ($p_obrazek)
 							{
 								$edit = coreDBEdit('prirazene_obrazky',array('obrazek'=>array('value'=>$p_obrazek,'type'=>'strict')),'id = "'.$uudi.'" ');
