@@ -105,7 +105,7 @@ echo '<script src="https://www.google.com/recaptcha/api.js?render=6LcuYWgbAAAAAP
 
 }
 echo '
-<script type="text/javascript" src="'.$C_dir.'js/scripts.js?language='.LANGUAGE.'&data202456874=0818"></script>
+<script type="text/javascript" src="'.$C_dir.'js/scripts.js?language='.LANGUAGE.'&data202456874=0818&modified='.filemtime($C_dir.'js/scripts.js').'"></script>
 <script type="text/javascript" src="'.$C_dir.'_js/scripts_faktury.js?data202300817=0817"></script>
 <link rel="shortcut icon" href="'.$C_dir.'favicon.ico" />';
 echo $addOn;
