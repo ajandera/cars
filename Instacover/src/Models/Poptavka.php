@@ -59,6 +59,6 @@ class Poptavka
 
     public function getState(): string
     {
-        return strtoupper($this->poptavka['state']) ?? 'CZ';
+        return strtoupper($this->poptavka['stat']) ?? 'CZ';
     }
 }

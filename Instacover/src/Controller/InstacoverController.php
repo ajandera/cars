@@ -71,7 +71,7 @@ class InstacoverController
             return;
         }
 
-        $poptavka = new Poptavka($data['id'], $this->table);
+        $poptavka = new Poptavka((int) $data['id'], $this->table);
 
         $accessToken = $this->getAccessToken($poptavka->getState());
 
@@ -148,13 +148,6 @@ class InstacoverController
             return;
         }
 
-        $accessToken = $this->getAccessToken();
-
-        if ($accessToken === null) {
-            $this->sendResponse(401, ['error' => 'Unauthorized. Invalid or missing API key.']);
-            return;
-        }
-
         try {
 
             $sessionId = isset($_GET['id']) ? $_GET['id'] : $_POST['id']; 
@@ -166,6 +159,14 @@ class InstacoverController
 
             $id = (int) $decodedId;
             $row = new Poptavka($id, $this->table);
+
+            $accessToken = $this->getAccessToken($row->getState());
+
+            if ($accessToken === null) {
+                $this->sendResponse(401, ['error' => 'Unauthorized. Invalid or missing API key.']);
+                return;
+            }
+
             $sessionId = $row->getPoptavkaSessionId();
 
             $res = $this->client->post('/instacar/v2.0/session/result', [
