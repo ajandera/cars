@@ -1,8 +1,6 @@
 <?php
 
-use Core\Ecomail\Controller\EcomailController;
-
-require_once "_config_ecomail.php";
+use Core\Ecomainl\Controller\EcomailController;
 
 if ( !defined('HACORE') ) {
     exit;
@@ -12,13 +10,12 @@ if ( !defined('HACORE') ) {
 if (file_exists(__DIR__ . '/vendor/autoload.php')) {
     require_once __DIR__ . '/vendor/autoload.php';
 } else {
-    error_log('EcomailController missing');
+    error_log('InstacoverController missing');
     exit;
 }
-
-$instacover = new EcomailController(
+$ecomail = new EcomailController(
     POPTAVKY_TABLE,
     ECOMAIL_API_KEY,
     SETTING_TABLE
 );
-$instacover->export();
+$ecomail->unsubscribe();

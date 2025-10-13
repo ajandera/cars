@@ -109,4 +109,35 @@ class EcomailController
         echo json_encode($data);
         exit;
     }
+
+    public function unsubscribe() {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            $this->sendResponse(405, ['error' => 'Invalid request method.']);
+            return;
+        }
+
+        $requestBody = file_get_contents('php://input');
+        $data = json_decode($requestBody, true);
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            $this->sendResponse(400, ['error' => 'Invalid JSON format.']);
+            return;
+        }
+
+        $mailFrom = $data['msys']['bounce']['mailfrom']
+            ?? $data['msys']['list_unsubscribe']['mailfrom']
+            ?? $data['msys']['link_unsubscribe']['mailfrom']
+            ?? null;
+
+        if ($mailFrom === null) {
+            $this->sendResponse(400, ['error' => 'Missing mailfrom in payload.']);
+            return;
+        }
+        
+        $id = coreDBSel("SELECT id FROM {$this->table} WHERE email = ?", [$mailFrom]);
+        $row = new Poptavka($id, $this->table);
+        $row->removeMarketingAgreement();
+        coreLog(3434, 3434, "User " . $data['msys']['unsubscribe_event']['mailfrom'] . " unsubscribed from marketing emails.", 'instacover');
+        $this->sendResponse(200, ['message' => 'Uspesne odhlaseno.']);
+    }  
 }
